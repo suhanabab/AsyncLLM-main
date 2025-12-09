@@ -7,12 +7,9 @@ import torch
 
 class Client(FTBaseClient):
     def __init__(self, id, args):
-        # 只调用 FTBaseClient 的初始化，因为它已经包含了数据加载等逻辑
         FTBaseClient.__init__(self, id, args)
-
-        # 手动添加 AsyncBaseClient 需要的属性
         self.status = Status.IDLE
-        self.training_time = 1.0  # 简化训练时间
+        self.training_time = 1.0 
         self.id = id
         self.args = args
         # self.model = None  # 确保 model 属性存在
@@ -93,16 +90,12 @@ class Client(FTBaseClient):
         torch.cuda.synchronize()
 
     def clone_model(self, server):
-        """克隆服务器的模型到客户端"""
         self.model = copy.deepcopy(server.model)
 
     def model2tensor(self):
-        """提取LoRA参数作为张量（优先返回 self.lora，如果没有再从 model 提取）"""
-        # 优先返回保存的 self.lora（训练后我们会把 lora 保存到这里）
         if hasattr(self, 'lora') and self.lora:
             return self.lora
 
-        # 否则尝试从当前 model 提取
         if getattr(self, 'model', None) is None:
             print(f"Warning: Client {self.id} model is None in model2tensor and no saved lora")
             return {}
@@ -112,7 +105,6 @@ class Client(FTBaseClient):
         return lora_params
 
     def tensor2model(self, tensor_dict):
-        """将张量参数加载到模型"""
         if self.model is None:
             print(f"Warning: Client {self.id} model is None in tensor2model")
             return
@@ -121,10 +113,8 @@ class Client(FTBaseClient):
         self.model.load_state_dict(current_state)
 
     def local_test(self, model=None):
-        """重写测试方法以兼容异步框架"""
         if model is None:
             model = self.model
-        # 如果客户端模型不存在，使用传入的模型
         if model is None:
             from utils.model_utils import load_model
             model, _ = load_model(self.args)
@@ -144,19 +134,14 @@ class Server(AsyncBaseServer):
 
 
     def local_run(self):
-        """实现抽象方法 - 在异步模式下这个方法可能不会被调用"""
-        # 在异步联邦学习中，客户端训练是通过 client_update 方法触发的
-        # 这个方法只是为了满足抽象类的要求
         pass
 
     def run(self):
-        """异步服务器运行逻辑"""
         self.round += 1
 
         # 1. 采样客户端
         sampled_clients = self.sample()
         if not sampled_clients:
-            # 如果没有采样到客户端，尝试处理队列中的客户端
             if self.uplink():
                 self.aggregate()
                 self.update_status()
@@ -174,20 +159,18 @@ class Server(AsyncBaseServer):
             self.update_status()
 
     def test_all(self):
-        """重写测试方法，确保客户端模型存在"""
         all_metrics = []
         for client in self.clients:
-            # 保存客户端当前状态（如果模型存在）
             original_state = {}
             if client.model is not None:
                 original_state = client.model2tensor()
 
-            # 使用服务器模型测试
+           
             client.clone_model(self)
             metrics = client.local_test(client.model)
             all_metrics.append(metrics)
 
-            # 恢复客户端状态
+            
             if original_state:
                 client.tensor2model(original_state)
 
