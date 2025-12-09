@@ -61,7 +61,7 @@ class Client(FTBaseClient):
         self.model.load_state_dict(current_state)
 
 
-# 服务器端类
+
 class Server(FTBaseServer):
     def __init__(self, args, clients):
         super().__init__(args, clients)
@@ -83,7 +83,7 @@ class Server(FTBaseServer):
         aggregated = defaultdict(lambda: 0)
 
         for client in self.clients:
-            client_lora = client.lora  # 获取客户端的LoRA参数
+            client_lora = client.lora  
             for k, v in client_lora.items():
                 aggregated[k] += v * len(client.dataset['train']) / data_sum
 
