@@ -1,0 +1,18 @@
+# device heterogeneity config
+dev:
+  ## Jetson TX2, Jetson Nano, Raspberry Pi
+  dev_prop: 1 1 1
+
+# communication heterogeneity config
+comm:
+  comm: True
+  ## WiFi, 4G, 5G
+  comm_prop: 1 1 1
+
+
+# dropout config
+dropout:
+  drop_latency: 100
+  ## possibility of drop out
+  drop_prob: 0.1
+

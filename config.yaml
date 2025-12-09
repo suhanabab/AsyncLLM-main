@@ -1,0 +1,56 @@
+# basic config
+alg: ffalora
+suffix: default
+device: 3
+dataset: gsm8k
+model: qwen
+
+# federated config
+cn: 10
+sr: 1
+rnd: 30 #都加多
+tg: 10
+
+# local training config
+bs: 4
+grad_accum: 8
+epoch: 1
+lr: 2e-4
+
+## fedsa_lora config
+#lora_variant: lora
+#lora_rank: 8        # 论文：lora=8，vera=256
+#lora_scaling: 16
+
+
+#lora_scaling: 16
+#lora_variant: lora
+client0_rank: 8
+client1_rank: 8
+client2_rank: 8
+client3_rank: 8
+client4_rank: 30
+client5_rank: 30
+client6_rank: 30
+client7_rank: 30
+client8_rank: 200
+client9_rank: 200
+#svd_some: true
+#svd_eps: 1e-6
+#
+#sample_rate: 0.3
+#decay: 0.9
+#strategy: hinge
+#a: 1.0
+#b: 4.0
+
+## ffa_lora config
+lora_variant: lora
+lora_rank: 8
+lora_scaling: 8
+#flexlora config more one
+local_rank: 8
+
+
+#flora config
+server_lora_rank: 80

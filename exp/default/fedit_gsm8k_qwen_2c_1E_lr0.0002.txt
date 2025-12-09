@@ -1,0 +1,11 @@
+
+[Round 0] Average Loss: 2.3691, Perplexity: 10.7000
+[Round 1] Average Loss: 1.6624, Perplexity: 5.2762
+[Round 2] Average Loss: 1.3706, Perplexity: 3.9406
+[Round 3] Average Loss: 1.2860, Perplexity: 3.6211
+[Round 4] Average Loss: 1.2600, Perplexity: 3.5280
+[Round 5] Average Loss: 1.2490, Perplexity: 3.4896
+[Round 6] Average Loss: 1.2392, Perplexity: 3.4554
+[Round 7] Average Loss: 1.2326, Perplexity: 3.4327
+[Round 8] Average Loss: 1.2278, Perplexity: 3.4160
+[Round 9] Average Loss: 1.2232, Perplexity: 3.4004
